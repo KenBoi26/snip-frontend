@@ -217,8 +217,36 @@
 
   // ─── History ─────────────────────────────
   function addToHistory(originalUrl, shortUrl) {
-    history.unshift({ originalUrl, shortUrl });
+    const parts = shortUrl.split('/');
+    const code = parts[parts.length - 1];
+    history.unshift({ originalUrl, shortUrl, code, clicks: 0 });
     renderHistory();
+    updateStatsForCode(code);
+  }
+
+  async function updateStatsForCode(code) {
+    // If it is a mock short URL code (doesn't exist on actual backend) we skip or let it fail gracefully
+    try {
+      const res = await fetch(`${API_BASE}/api/stats/${code}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      
+      // Update local state
+      const item = history.find(i => i.code === code);
+      if (item) {
+        item.clicks = data.clicks;
+      }
+      
+      // Update DOM element directly if it exists to avoid full re-render
+      const badge = $(`.history-clicks[data-code="${code}"]`);
+      if (badge) {
+        badge.textContent = `${data.clicks} click${data.clicks === 1 ? '' : 's'}`;
+        badge.classList.add('updated');
+        setTimeout(() => badge.classList.remove('updated'), 600);
+      }
+    } catch (err) {
+      console.warn('Failed to fetch stats for:', code, err.message);
+    }
   }
 
   function renderHistory() {
@@ -236,6 +264,7 @@
       li.style.setProperty('--i', idx);
       li.innerHTML = `
         <span class="history-original" title="${escapeHTML(item.originalUrl)}">${escapeHTML(item.originalUrl)}</span>
+        <span class="history-clicks" data-code="${escapeHTML(item.code)}">${item.clicks} clicks</span>
         <a href="${escapeHTML(item.shortUrl)}" class="history-short" target="_blank" rel="noopener">${escapeHTML(item.shortUrl)}</a>
         <button class="history-copy-btn" aria-label="Copy ${escapeHTML(item.shortUrl)}" data-url="${escapeHTML(item.shortUrl)}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
