@@ -98,7 +98,7 @@
   // Point this to your backend. Falls back to mock if unreachable.
   const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8000'
-    : 'https://snip-backend-1-lf5m.onrender.com';
+    : 'https://api.kennyy.me';
 
   async function shortenURL(url) {
     try {
