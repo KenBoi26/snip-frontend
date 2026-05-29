@@ -100,22 +100,6 @@
     ? 'http://localhost:8000'
     : 'https://api.kennyy.me';
 
-  async function mockShortenAPI(url) {
-    // Fallback: simulate response when backend is offline
-    await new Promise((r) => setTimeout(r, 600 + Math.random() * 400));
-
-    const chars = 'abcdefghijkmnpqrstuvwxyz23456789';
-    let code = '';
-    for (let i = 0; i < 6; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
-    }
-
-    return {
-      short_code: code,
-      short_url: `https://snip.to/${code}`,
-    };
-  }
-
   async function shortenURL(url) {
     try {
       const res = await fetch(`${API_BASE}/api/shorten`, {
@@ -127,9 +111,30 @@
       if (!res.ok) throw new Error(`API returned ${res.status}`);
       return res.json();
     } catch (err) {
-      console.warn('Backend unavailable, using mock:', err.message);
-      return mockShortenAPI(url);
+      console.error('Backend unavailable:', err.message);
+      showToast('⚠️ Backend offline — could not shorten URL. Please try again later.');
+      return null;
     }
+  }
+
+  function showToast(message) {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      toast.style.cssText = `
+        position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+        background: #2a1f14; color: #faf7f2; padding: 12px 24px;
+        border-radius: 999px; font-size: 0.85rem; font-weight: 500;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.25); z-index: 9999;
+        opacity: 0; transition: opacity 300ms ease;
+      `;
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 4000);
   }
 
 
@@ -172,6 +177,8 @@
 
     try {
       const data = await shortenURL(url);
+
+      if (!data) return; // Backend offline, toast already shown
 
       // Show result
       shortUrlOut.textContent = data.short_url;
