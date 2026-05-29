@@ -1,0 +1,725 @@
+/* ============================================
+   SNIP — Design Tokens
+   ============================================ */
+:root {
+  /* --- Color palette: warm cream + burnt orange --- */
+  --clr-bg:         oklch(96% 0.01 75);
+  --clr-bg-brand:   oklch(30% 0.04 55);
+  --clr-surface:    oklch(98% 0.005 75);
+  --clr-surface-2:  oklch(93% 0.015 75);
+  --clr-border:     oklch(88% 0.02 75);
+  --clr-border-focus: oklch(62% 0.17 45);
+
+  --clr-text:       oklch(22% 0.02 55);
+  --clr-text-2:     oklch(42% 0.02 55);
+  --clr-text-3:     oklch(58% 0.015 55);
+  --clr-text-inv:   oklch(96% 0.01 75);
+
+  --clr-accent:     oklch(62% 0.19 45);
+  --clr-accent-hover: oklch(55% 0.20 42);
+  --clr-accent-subtle: oklch(90% 0.06 45);
+
+  --clr-success:    oklch(55% 0.14 155);
+  --clr-error:      oklch(55% 0.18 25);
+
+  /* --- Typography --- */
+  --ff-display: 'Fraunces', Georgia, serif;
+  --ff-body: 'Instrument Sans', -apple-system, system-ui, sans-serif;
+
+  --fs-xs:   clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem);
+  --fs-sm:   clamp(0.82rem, 0.78rem + 0.2vw, 0.9rem);
+  --fs-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+  --fs-md:   clamp(1.1rem, 1rem + 0.5vw, 1.3rem);
+  --fs-lg:   clamp(1.5rem, 1.2rem + 1.5vw, 2.2rem);
+  --fs-xl:   clamp(2.5rem, 2rem + 2.5vw, 4rem);
+  --fs-xxl:  clamp(3.5rem, 2.5rem + 5vw, 7rem);
+
+  --lh-tight:  1.15;
+  --lh-body:   1.55;
+  --lh-loose:  1.75;
+
+  /* --- Spacing --- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-8: 3rem;
+  --sp-10: 4rem;
+  --sp-12: 5rem;
+  --sp-16: 8rem;
+
+  /* --- Radius --- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* --- Motion --- */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:   120ms;
+  --dur-med:    250ms;
+  --dur-slow:   400ms;
+  --dur-enter:  600ms;
+
+  /* --- Layout --- */
+  --brand-width: 38%;
+}
+
+
+/* ============================================
+   Reset & Base
+   ============================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  color: var(--clr-text);
+  background: var(--clr-bg);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+input, button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+::selection {
+  background: var(--clr-accent-subtle);
+  color: var(--clr-text);
+}
+
+
+/* ============================================
+   Layout — Asymmetric Two Column
+   ============================================ */
+.layout {
+  display: grid;
+  grid-template-columns: var(--brand-width) 1fr;
+  min-height: 100dvh;
+}
+
+
+/* ============================================
+   Brand Column (Left)
+   ============================================ */
+.brand-col {
+  background: var(--clr-bg-brand);
+  color: var(--clr-text-inv);
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--sp-10) var(--sp-8);
+  overflow: hidden;
+}
+
+.brand-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.logo {
+  font-family: var(--ff-display);
+  font-size: var(--fs-xxl);
+  font-weight: 300;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.03em;
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+
+.logo-dot {
+  color: var(--clr-accent);
+  font-weight: 700;
+}
+
+.tagline {
+  font-size: var(--fs-md);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  margin-top: var(--sp-4);
+  opacity: 0.7;
+}
+
+/* Decorative circle */
+.brand-decoration {
+  position: absolute;
+  top: -60%;
+  right: -40%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1px solid oklch(96% 0.01 75 / 0.08);
+  pointer-events: none;
+}
+
+.brand-decoration::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  border: 1px solid oklch(96% 0.01 75 / 0.05);
+}
+
+
+/* ============================================
+   App Column (Right)
+   ============================================ */
+.app-col {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-10) clamp(var(--sp-6), 5vw, var(--sp-16));
+  max-width: 720px;
+}
+
+
+/* ============================================
+   Tab Bar
+   ============================================ */
+.tab-bar {
+  display: inline-flex;
+  position: relative;
+  background: var(--clr-surface-2);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 2px;
+  align-self: flex-start;
+  margin-bottom: var(--sp-10);
+}
+
+.tab {
+  position: relative;
+  z-index: 1;
+  padding: var(--sp-2) var(--sp-5);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--clr-text-3);
+  border-radius: var(--radius-full);
+  transition: color var(--dur-med) var(--ease-out-quart);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--clr-text-2);
+}
+
+.tab.active {
+  color: var(--clr-text);
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  background: var(--clr-surface);
+  border-radius: var(--radius-full);
+  box-shadow: 0 1px 3px oklch(22% 0.02 55 / 0.08);
+  transition: transform var(--dur-slow) var(--ease-out-expo),
+              width var(--dur-slow) var(--ease-out-expo);
+  z-index: 0;
+}
+
+
+/* ============================================
+   Panels
+   ============================================ */
+.panel {
+  display: none;
+  animation: panelIn var(--dur-enter) var(--ease-out-expo) both;
+}
+
+.panel.active {
+  display: block;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ============================================
+   Input Group
+   ============================================ */
+.input-label {
+  display: block;
+  font-family: var(--ff-display);
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--sp-5);
+  color: var(--clr-text);
+}
+
+.input-row {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: stretch;
+}
+
+.text-input {
+  flex: 1;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-base);
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--dur-med) var(--ease-out-quart),
+              box-shadow var(--dur-med) var(--ease-out-quart);
+  min-width: 0;
+}
+
+.text-input::placeholder {
+  color: var(--clr-text-3);
+}
+
+.text-input:focus {
+  border-color: var(--clr-border-focus);
+  box-shadow: 0 0 0 3px oklch(62% 0.17 45 / 0.12);
+}
+
+.text-input.error {
+  border-color: var(--clr-error);
+  box-shadow: 0 0 0 3px oklch(55% 0.18 25 / 0.1);
+}
+
+
+/* ============================================
+   Buttons
+   ============================================ */
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--clr-text-inv);
+  background: var(--clr-accent);
+  border-radius: var(--radius-md);
+  transition: background var(--dur-fast) var(--ease-out-quart),
+              transform var(--dur-fast) var(--ease-out-quart);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.primary-btn:hover {
+  background: var(--clr-accent-hover);
+}
+
+.primary-btn:active {
+  transform: scale(0.97);
+}
+
+.primary-btn.loading .btn-text {
+  opacity: 0;
+}
+
+.primary-btn.loading .btn-loader {
+  display: block;
+}
+
+.btn-loader {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid oklch(96% 0.01 75 / 0.3);
+  border-top-color: var(--clr-text-inv);
+  border-radius: 50%;
+  animation: spin 600ms linear infinite;
+  position: absolute;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--clr-accent);
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast) var(--ease-out-quart),
+              color var(--dur-fast) var(--ease-out-quart);
+}
+
+.ghost-btn:hover {
+  background: var(--clr-accent-subtle);
+  color: var(--clr-accent-hover);
+}
+
+.ghost-btn:active {
+  transform: scale(0.97);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+
+/* ============================================
+   Shorten Result
+   ============================================ */
+.result-area {
+  margin-top: var(--sp-8);
+  animation: resultIn var(--dur-enter) var(--ease-out-expo) both;
+}
+
+@keyframes resultIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-card {
+  padding: var(--sp-5);
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-border);
+  border-left: 3px solid var(--clr-accent);
+  border-radius: var(--radius-md);
+}
+
+.result-label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clr-text-3);
+  margin-bottom: var(--sp-2);
+}
+
+.result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.short-url {
+  font-family: var(--ff-display);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  color: var(--clr-accent);
+  word-break: break-all;
+}
+
+.copy-text {
+  transition: opacity var(--dur-fast);
+}
+
+/* Copied state */
+.ghost-btn.copied {
+  color: var(--clr-success);
+}
+
+.ghost-btn.copied .copy-text::after {
+  content: '✓';
+  margin-left: var(--sp-1);
+}
+
+
+/* ============================================
+   History
+   ============================================ */
+.history-section {
+  margin-top: var(--sp-10);
+  animation: resultIn var(--dur-enter) var(--ease-out-expo) 0.1s both;
+}
+
+.section-title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-base);
+  font-weight: 500;
+  color: var(--clr-text-2);
+  margin-bottom: var(--sp-4);
+  font-style: italic;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast) var(--ease-out-quart);
+  animation: historyItemIn var(--dur-slow) var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+
+@keyframes historyItemIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.history-item:hover {
+  background: var(--clr-surface-2);
+}
+
+.history-original {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.history-short {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--clr-accent);
+  white-space: nowrap;
+}
+
+.history-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  color: var(--clr-text-3);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+
+.history-copy-btn:hover {
+  color: var(--clr-accent);
+  background: var(--clr-accent-subtle);
+}
+
+.history-copy-btn.copied {
+  color: var(--clr-success);
+}
+
+
+/* ============================================
+   QR Code Result
+   ============================================ */
+.qr-result-area {
+  margin-top: var(--sp-8);
+  animation: resultIn var(--dur-enter) var(--ease-out-expo) both;
+}
+
+.qr-canvas-wrap {
+  display: inline-block;
+  padding: var(--sp-6);
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+}
+
+.qr-canvas-wrap canvas,
+.qr-canvas-wrap img {
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+.qr-meta {
+  margin-top: var(--sp-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.qr-source {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 55%;
+}
+
+
+/* ============================================
+   Footer
+   ============================================ */
+.app-footer {
+  margin-top: auto;
+  padding-top: var(--sp-10);
+}
+
+.app-footer p {
+  font-size: var(--fs-xs);
+  color: var(--clr-text-3);
+}
+
+
+/* ============================================
+   Page Load Animation
+   ============================================ */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brand-inner {
+  animation: fadeSlideUp 800ms var(--ease-out-expo) 200ms both;
+}
+
+.tab-bar {
+  animation: fadeSlideUp 600ms var(--ease-out-expo) 400ms both;
+}
+
+.panel-content {
+  animation: fadeSlideUp 600ms var(--ease-out-expo) 550ms both;
+}
+
+.app-footer {
+  animation: fadeSlideUp 500ms var(--ease-out-expo) 700ms both;
+}
+
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-col {
+    position: relative;
+    height: auto;
+    padding: var(--sp-8) var(--sp-6) var(--sp-6);
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-size: var(--fs-xl);
+  }
+
+  .brand-decoration {
+    display: none;
+  }
+
+  .tagline br {
+    display: none;
+  }
+
+  .app-col {
+    padding: var(--sp-6);
+  }
+}
+
+@media (max-width: 500px) {
+  .input-row {
+    flex-direction: column;
+  }
+
+  .primary-btn {
+    width: 100%;
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  .result-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .history-item {
+    grid-template-columns: 1fr auto;
+  }
+
+  .history-original {
+    grid-column: 1 / -1;
+  }
+
+  .qr-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .qr-source {
+    max-width: 100%;
+  }
+}

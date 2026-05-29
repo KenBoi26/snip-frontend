@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snip — Shorten URLs & Generate QR Codes</title>
+  <meta name="description" content="Snip is a fast, beautiful tool to shorten long URLs and generate downloadable QR codes instantly.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- QR Code library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="layout">
+    <!-- Left column — branding -->
+    <aside class="brand-col">
+      <div class="brand-inner">
+        <h1 class="logo">Snip<span class="logo-dot">.</span></h1>
+        <p class="tagline">Make it shorter.<br>Make it scannable.</p>
+        <div class="brand-decoration" aria-hidden="true"></div>
+      </div>
+    </aside>
+
+    <!-- Right column — app -->
+    <main class="app-col">
+      <!-- Tab toggle -->
+      <nav class="tab-bar" role="tablist" aria-label="Tool selection">
+        <button
+          id="tab-shorten"
+          class="tab active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-shorten"
+          data-tab="shorten"
+        >Shorten URL</button>
+        <button
+          id="tab-qr"
+          class="tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-qr"
+          data-tab="qr"
+        >QR Code</button>
+        <span class="tab-indicator" aria-hidden="true"></span>
+      </nav>
+
+      <!-- Shorten panel -->
+      <section
+        id="panel-shorten"
+        class="panel active"
+        role="tabpanel"
+        aria-labelledby="tab-shorten"
+      >
+        <div class="panel-content">
+          <label for="shorten-input" class="input-label">Paste your long URL</label>
+          <div class="input-row">
+            <input
+              type="url"
+              id="shorten-input"
+              class="text-input"
+              placeholder="https://example.com/really/long/path/to/something"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <button id="shorten-btn" class="primary-btn">
+              <span class="btn-text">Snip it</span>
+              <span class="btn-loader" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <!-- Result -->
+          <div id="shorten-result" class="result-area" hidden>
+            <div class="result-card">
+              <span class="result-label">Your snipped link</span>
+              <div class="result-row">
+                <output id="short-url-output" class="short-url"></output>
+                <button id="copy-btn" class="ghost-btn" aria-label="Copy short URL">
+                  <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  <span class="copy-text">Copy</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- History -->
+          <div id="history-section" class="history-section" hidden>
+            <h2 class="section-title">Recent snips</h2>
+            <ul id="history-list" class="history-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- QR Code panel -->
+      <section
+        id="panel-qr"
+        class="panel"
+        role="tabpanel"
+        aria-labelledby="tab-qr"
+        hidden
+      >
+        <div class="panel-content">
+          <label for="qr-input" class="input-label">Paste a URL or text</label>
+          <div class="input-row">
+            <input
+              type="text"
+              id="qr-input"
+              class="text-input"
+              placeholder="https://example.com or any text"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <button id="qr-btn" class="primary-btn">Generate</button>
+          </div>
+
+          <!-- QR result -->
+          <div id="qr-result" class="qr-result-area" hidden>
+            <div class="qr-canvas-wrap">
+              <div id="qr-canvas"></div>
+            </div>
+            <div class="qr-meta">
+              <p id="qr-source-text" class="qr-source"></p>
+              <button id="qr-download-btn" class="ghost-btn">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download PNG
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="app-footer">
+        <p>Built with care. No data leaves your browser.</p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
